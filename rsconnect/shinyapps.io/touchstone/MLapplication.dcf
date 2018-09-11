@@ -1,0 +1,12 @@
+name: MLapplication
+title: MLapplication
+username:
+account: touchstone
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 430482
+bundleId: 1576818
+url: https://touchstone.shinyapps.io/MLapplication/
+when: 1536495240.51023
+asMultiple: FALSE
+asStatic: FALSE
