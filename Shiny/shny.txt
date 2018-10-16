@@ -1,0 +1,277 @@
+library(shiny)
+library(shinythemes)
+library(party)
+library(shinydashboard)
+library(plyr)
+library(dplyr)
+library(packrat)
+library(stringr)
+library(e1071)
+library(tm)
+library(sentiment)
+library(randomForest)
+library(ggplot2)
+library(Rstem)
+library(wordcloud)
+library(plotly) 
+library(caret)
+library(cvTools)
+setwd(".")
+posText <- read.delim(file='rt-polarity-pos.txt', header=FALSE, stringsAsFactors=FALSE, quote ="")
+negText <- read.delim(file='rt-polarity-neg.txt', header=FALSE, stringsAsFactors=FALSE, quote="")
+sent_df<-read.csv(file = 'sent_df.csv',header=FALSE,stringsAsFactors = FALSE)
+afinn_list <- read.delim(file='AFINN-111.txt', header=FALSE, stringsAsFactors=FALSE)
+results<-read.csv("results.csv",header = FALSE,stringsAsFactors = FALSE)
+ac_rand<-read.csv("ac_rand.csv",header = FALSE,stringsAsFactors = FALSE)
+ui <- fluidPage(shinyUI(dashboardPage(
+  skin = "purple",
+  dashboardHeader(title = "Sentiment Analysis "),
+  dashboardSidebar(
+    sidebarMenu(
+    menuItem("About PrOject", tabName = "project", icon = icon("dashboard")),
+    menuItem("Data Preparation", tabName = "data", icon = icon("wrench")),
+    menuItem("Algorithms", tabName = "analysis", icon = icon("cogs"),
+             menuSubItem("Navies Bayes",tabName = "nav"),
+             menuSubItem("SVM", tabName = "svm"),
+             menuSubItem("Random Forest", tabName = "rand")
+             
+              ),
+    menuItem("Results", tabName = "results", icon = icon("dashboard"),
+             menuSubItem("Postive word cloud", tabName = "word"),
+             menuSubItem("Negative word cloud",tabName = "neg"),
+             menuSubItem("Emotions", tabName = "emo"),
+             menuSubItem("Polarity", tabName = "pol")),
+             tags$img(src='sn.png',height=250,width=150)
+    
+    ) ),
+  dashboardBody(
+    tabItems(
+      tabItem(tabName = "project", 
+              fluidPage(fluidRow(
+                h2("***What is Sentiment Analysis?***"),
+                tags$hr(),
+                  h4("(Sentiment analysis is the measurement of positive and negative language.)"),
+               
+                  h4("1.It is a way to evaluate written or spoken language to determine if the expression is favorable, unfavorable, or neutral, and to what degree."),
+                  h4("2.Today’s algorithm-based sentiment analysis tools can handle huge volumes of customer feedback consistently and accurately. Paired with text analytics, sentiment analysis reveals the customer’s opinion about topics ranging from your products and services to your location, your advertisements, or even your competitors"),
+                  h4("3.Sentiment analysis is not a once and done effort. By reviewing your customer’s feedback on your business regularly you can be more proactive regarding the changing dynamics in the market place"),              
+                  h4(""),
+                  h4(""),
+                  h4(""),
+                tags$img(src="st.jpg",height=300,width=600)
+                
+                ))),
+              
+      tabItem(tabName = "data",
+              fluidPage(
+                title = "Details of the data", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = 11,
+                
+                tabsetPanel(
+                  tabPanel("positive data",tableOutput("pos"),icon = icon("table")),
+                  tabPanel("Negative Data",tableOutput('neg'),icon=icon("table")),
+                  tabPanel("Dictionary data",tableOutput("dic"),icon = icon("table")),
+                  tabPanel("Results data",tableOutput("resul"),icon = icon("table")),
+                  tabPanel("Results with emotion and polarity",tableOutput("polem"),icon = icon("table"))
+                                ))),
+      tabItem(tabName = "nav",
+              fluidPage(
+                
+                
+                box(title = "Naive Bayes Classifier", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = 11,
+                    h4("The Naive Bayes Classifier technique is based on the so-called Bayesian theorem and is particularly suited when the dimensionality of the inputs is high. Despite its simplicity, Naive Bayes can often outperform more sophisticated classification methods"),
+                    tags$hr()
+                    
+              )),
+              
+              
+              mainPanel(h4("Accuracy of  Navies Bayes is ** % 0.6151 **"))
+                
+              ),
+      tabItem(tabName = "svm",
+              fluidPage(
+              
+                box(title = "Support Vector machines ", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = 11,
+                    h4("Support Vector Machines (SVMs) are supervised learning methods used for classification and regression tasks that originated from statistical learning theory. As a classification method, SVM is a global classification model that generates non-overlapping partitions and usually employs all attributes."),
+                    tags$hr()
+                    
+                )),
+              mainPanel(h4("Accuracy of  Support Vector Machines is ** % 0.587 **"))
+              ),
+      
+      tabItem(tabName = "rand",
+              fluidPage(
+                
+                box(title = "Random Forest Classifier", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = 11,
+                    h4("Random forests or random decision forests are an ensemble learning method for classification, regression and other tasks, that operate by constructing a multitude of decision trees at training time and outputting the class that is the mode of the classes (classification) or mean prediction (regression) "),
+                      tags$hr()
+                    
+                )),
+              
+              mainPanel(h4("Accuracy of Random Forest is ** % 0.6191 **, so we can build a model on Random Forest Algorithm to get the sentiment analysis" ))
+                        
+              
+              
+              ),
+      tabItem(tabName = "word",
+              fluidPage(
+                  h2("what is word cloud?"),
+                  h4("1.One can create a word cloud, also referred as text cloud or tag cloud, which is a visual representation of text data. ... The text mining package (tm) and the word cloud generator package (wordcloud) are available in R for helping us to analyze texts and to quickly visualize the keywords as a word cloud"),
+               tags$hr(),
+                   actionButton('word_action',label = 'Word Cloud',icon("leaf",lib = "glyphicon"),
+                             style="color: #fff; background-color:green;border-color: #2e6da4"),
+               mainPanel(h4("POSITIVE WORD CLOUD"),plotOutput("pos_wd"))
+              )),
+      tabItem(tabName = "neg",
+              fluidPage(
+                h2("Negative Word cloud"),
+                h4("*This word cloud elabrates the negative comments of the people who don't like the movie...and what are the main aspects that people do not like in the movie. "),
+                tags$hr(),
+                actionButton('word_Action',label = 'Word Cloud',icon("leaf",lib = "glyphicon"),
+                             style="color: #fff; background-color:green;border-color: #2e6da4"),
+                
+                
+                 mainPanel(h4("Negative Word Cloud"),plotOutput("neg_wd"))
+                 )),
+      tabItem(tabName = "emo",
+              fluidPage( 
+                h2("what is Emotions?"),
+                h4("(This function helps us to analyze tweets / text and classify it in different types of emotion: anger, disgust, fear, joy, sadness, and surprise...)"),
+                tags$hr(),
+                actionButton('emo_action',label = 'Emotions',icon("leaf",lib = "glyphicon"),
+                             style="color: #fff; background-color:green;border-color: #2e6da4"),
+                mainPanel("emotions plot",plotOutput("emo_plot"))
+                
+                )),
+      tabItem(tabName = "pol",
+              fluidPage(
+                h2("What is Polarity?"),
+                h4("(In contrast to the classification of emotions, the classify_polarity function allows us to classify some text as positive or negative. )"),
+               tags$hr(),
+                 actionButton('pol_action',label = 'Polarity',icon("leaf",lib = "glyphicon"),
+                             style="color: #fff; background-color:green;border-color: #2e6da4"),
+               mainPanel("polarity plot",plotOutput("pol_plot"))
+                 
+              ))
+      
+      
+  ))
+  
+  )))
+
+
+
+        
+server <- function(input, output) {
+  
+  output$pos<-renderTable({
+    tail(posText,15)
+  })
+  output$neg<-renderTable({
+    tail(negText,15)
+  })
+  output$dic<-renderTable({
+    tail(afinn_list,15)
+  })
+  output$polem<-renderTable({
+    head(sent_df,10)
+  })
+  output$resul<-renderTable({
+    head(results,10)
+  })  
+  
+results<-read.csv("results.csv",stringsAsFactors = FALSE)
+set.seed(1000)
+  observe({
+    sent_df=read.csv("sent_df.csv",stringsAsFactors = FALSE)
+    observeEvent(input$emo_action,{
+      output$emo_plot<-renderPlot({
+        
+        ggplot(sent_df, aes(x=emotion)) +
+          geom_bar(aes(y=..count.., fill=emotion)) +
+          scale_fill_brewer(palette="Dark2") +
+          labs(x="emotion categories", y="density")
+        
+      })
+      
+    })
+  })
+  
+  set.seed(1000)
+  observe({
+    posText <- read.delim(file='rt-polarity-pos.txt', header=FALSE, stringsAsFactors=FALSE, quote ="")
+    cor=Corpus(VectorSource(posText))
+    # to see the  few documents in cor file
+    inspect(cor)[1:2]
+    cor_data<-tm_map(cor,stripWhitespace)
+    cor_data<-tm_map(cor_data,tolower)
+    
+    cor_data<-tm_map(cor_data,removeNumbers)
+    
+    cor_data<-tm_map(cor_data,removePunctuation)
+    
+    cor_data<-tm_map(cor_data,removeWords, stopwords("english"))
+    
+    tdm_modi<-TermDocumentMatrix (cor_data) #Creates a TDM
+    
+    TDM1<-as.matrix(tdm_modi) #Convert this into a matrix format
+    
+    v = sort(rowSums(TDM1), decreasing = TRUE) #Gives you the frequencies for every word
+    
+    observeEvent(input$word_action,{
+     output$pos_wd<-renderPlot({
+       wordcloud (cor_data, scale=c(8,0.5), max.words=30, random.order=FALSE, rot.per=0.45, use.r.layout=FALSE, colors=brewer.pal(8, "Dark2"))
+       
+     })
+     
+   })
+  })
+  set.seed(1000)
+  observe({
+    negText <- read.delim(file='rt-polarity-neg.txt', header=FALSE, stringsAsFactors=FALSE, quote ="")
+    cor1=Corpus(VectorSource(negText))
+    # to see the  few documents in cor file
+    inspect(cor1)[1:2]
+    cor1_data<-tm_map(cor1,stripWhitespace)
+    cor1_data<-tm_map(cor1_data,tolower)
+    
+    cor1_data<-tm_map(cor1_data,removeNumbers)
+    
+    cor1_data<-tm_map(cor1_data,removePunctuation)
+    
+    cor1_data<-tm_map(cor1_data,removeWords, stopwords("english"))
+    
+    tdm_modi<-TermDocumentMatrix (cor1_data) #Creates a TDM
+    
+    TDM1<-as.matrix(tdm_modi) #Convert this into a matrix format
+    
+    observeEvent(input$word_Action,{
+      output$neg_wd<-renderPlot({
+        wordcloud (cor1_data, scale=c(5,0.9), max.words=35, random.order=FALSE, rot.per=0.35, use.r.layout=FALSE, colors=brewer.pal(9, "Dark2"))
+        
+      })
+      
+    })
+    
+    
+  })
+  
+  
+  set.seed(1000)
+  observe({
+    sent_df=read.csv("sent_df.csv",stringsAsFactors = FALSE)
+    observeEvent(input$pol_action,{
+      output$pol_plot<-renderPlot({
+        
+        ggplot(sent_df, aes(x=polarity)) +
+          geom_bar(aes(y=..count.., fill=polarity)) +
+          scale_fill_brewer(palette="RdGy") +
+          labs(x="polarity categories", y="")
+        
+      })
+      
+    })
+  })
+
+
+}
+shinyApp(ui = ui, server = server)
