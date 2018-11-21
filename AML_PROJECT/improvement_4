@@ -1,3 +1,4 @@
+# add some comments for understanding it better
 library(e1071)
 library(tensorflow)
 library(keras)
