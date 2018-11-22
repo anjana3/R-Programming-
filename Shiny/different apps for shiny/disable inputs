@@ -1,0 +1,56 @@
+library(shiny)
+library(shinyjs)
+
+ui <- fluidPage(
+  h3('Disable all inputs while running'),
+  actionButton('btn_all_inputs','Run long process'),
+  h3('Disable only buttons while running'),
+  actionButton('btn_only_buttons','Run long process'),
+  hr(),
+  h3('Inputs'),
+  textInput('text1', 'Text1',"my text:"),
+  actionButton('btn1','Button 1'),
+  actionButton('btn2','Button 2'),
+  actionButton('btn3','Button 3'),
+  sliderInput('slid3','Slider 1',min=0,max=1,value=0.5),
+  useShinyjs()
+)
+
+
+server <- function(input, output, session){
+  
+  # Function to toggle input elements. 
+  # input_list: List of inputs, reactiveValuesToList(input)
+  # enable_inputs: Enable or disable inputs?
+  # Only buttons: Toggle all inputs, or only buttons?
+  toggle_inputs <- function(input_list,enable_inputs=T,only_buttons=FALSE)
+  {
+    # Subset if only_buttons is TRUE.
+    if(only_buttons){
+      buttons <- which(sapply(input_list,function(x) {any(grepl('Button',attr(x,"class")))}))
+      input_list = input_list[buttons]
+    }
+    
+    # Toggle elements
+    for(x in names(input_list))
+      if(enable_inputs){
+        shinyjs::enable(x)} else {
+          shinyjs::disable(x) }
+  }
+  
+  observeEvent(input$btn_all_inputs,{
+    input_list <- reactiveValuesToList(input)
+    toggle_inputs(input_list,F,F)
+    Sys.sleep(5)
+    toggle_inputs(input_list,T,F)
+  })
+  
+  observeEvent(input$btn_only_buttons,{
+    input_list <- reactiveValuesToList(input)
+    toggle_inputs(input_list,F,T)
+    Sys.sleep(5)
+    toggle_inputs(input_list,T,T)
+  })
+}
+
+shinyApp(ui = ui, server = server)
