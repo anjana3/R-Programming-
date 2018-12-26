@@ -1,0 +1,23 @@
+#https://www.kaggle.com/rtatman/nlp-in-r-topic-modelling
+
+library(tm)
+library(tidyverse) 
+library(tidytext) 
+library(topicmodels)
+input_data <- read.csv("/home/anjana/anjana/csv/Text_Data (1).csv", header = FALSE)
+reviewsCorpus <- Corpus(VectorSource(input_data$V1)) 
+reviewsDTM <- DocumentTermMatrix(reviewsCorpus)
+# convert the document term matrix to a tidytext corpus
+reviewsDTM_tidy <- tidy(reviewsDTM)
+
+reviewsDTM_tidy_cleaned <- reviewsDTM_tidy %>% 
+  anti_join(stop_words, by = c("term" = "word"))
+
+cleaned_documents <- reviewsDTM_tidy_cleaned %>%
+  group_by(document) %>% 
+  mutate(terms = toString(rep(term, count))) %>%
+  select(document, terms) %>%
+  unique()
+
+write.table(cleaned_documents,"/home/anjana/Desktop/text_csv_stopwords.csv",quote = FALSE,row.names = FALSE,col.names = FALSE)
+top_terms_by_topic_LDA(cleaned_documents$terms, number_of_topics = 2)
