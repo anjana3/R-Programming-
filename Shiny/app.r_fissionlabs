@@ -1,0 +1,141 @@
+library(shiny)
+library(shinythemes)
+library(DT)
+library(ggplot2)
+library(data.table)
+library(corrplot)
+library(dplyr)
+library(shinydashboard)
+ui<-fluidPage(shinyUI(dashboardPage(skin = "blue",
+                                dashboardHeader(title = span(tagList(icon("blackboard", lib = "glyphicon"), "Assignment"))),
+                                dashboardSidebar(
+                                  sidebarMenu(
+                                    menuItem(h4("Shiny pplication"),tabName = "details"),
+                                    menuItem(h4("Developed By")),
+                                    menuItem(h4("ANJANA NARAYANA.K")),
+                                    menuItem(h4("Junior Data Scientist")))),
+                                dashboardBody(
+                                  tabItems(
+                                    tabItem(tabName = "details",
+                                            fluidPage(
+                                              tabsetPanel(
+                                                tabPanel(h4("Data View"),
+                                                         sidebarLayout(position = "left",
+                                                                       sidebarPanel(
+                                                                         p(h4("Loading the mtcars and iris datasets")),
+                                                                         selectInput("dataset", "Choose a dataset:",
+                                                                                     choices = c("iris", "mtcars")),
+                                                                         tags$hr(),
+                                                                         actionButton('btn_viewData',label = 'Summary of the Dataset ',icon=icon('table'),style="color: #fff; background-color: lightblue;border-color: #2e6da4",width = 200),
+                                                                         tags$hr(),
+                                                                         h5(textOutput('txt_dataset')),
+                                                                         h5(textOutput('txt_n')),
+                                                                         h5(textOutput('txt_c')),
+                                                                         h5(textOutput('txt_names'))
+
+                                                                       ),
+                                                                       mainPanel(
+                                                                         dataTableOutput("summary")
+                                                                       )
+                                                                       )
+                                                ),
+                                                tabPanel(h4("ploting"),
+                                                        sidebarLayout(
+                                                          sidebarPanel(
+                                                            box(width=15,title = "Scatterplot Display",solidHeader = T,status = 'primary',
+                                                            h4("Get scatter plot by selecting your variables from select input ."),
+                                                            h4("Click on click here for plot button to see the scatter plot ")),
+                                                            tags$hr(),
+                                                            uiOutput("selectbox"),
+                                                            uiOutput("selectbox1"),
+                                                            actionButton("act",label = "Click here for plot",style="color: #fff; background-color: green;border-color: #2e6da4",width = 150)
+                                                            
+                                                          ),
+                                                          mainPanel(
+                                                            plotOutput("s_plot")
+                                                            )
+                                                        )
+                                              ))
+                                            ))
+                                  )
+                                ))))  
+
+server <- function(input, output) {
+  
+  datasetInput <- reactive({
+    switch(input$dataset,
+           "iris" = iris,
+           "mtcars"=mtcars)
+  })
+  
+  output$summary<-renderDataTable({
+    datasetInput()})
+  output$txt_dataset <- renderPrint(cat('Dataset:',input$dataset))
+  output$txt_n <- renderPrint(cat('Num of observations:',nrow(datasetInput())))
+  output$txt_c <- renderPrint(cat('Num of columns :',length(names(datasetInput()))))
+  output$txt_names <- renderPrint(c('Variables:',names(datasetInput())))
+  
+  
+  
+  df_sel_tar <- reactive({
+    req(input$selectbox)
+    
+    df_sel_tar <- datasetInput() %>% select(input$selectbox)
+    
+  })
+  df_sel <- reactive({
+    req(input$selectbox1)
+    
+    df_sel <- datasetInput() %>% select(input$selectbox1)
+    
+  })
+  # 
+  
+observe({
+   
+    df_hg <- data.frame(x=df_sel_tar(),y=df_sel())
+    observeEvent(input$act,{
+    output$s_plot<-renderPlot({
+      p<-ggplot(df_hg,aes(x=df_hg[,1],y=df_hg[,2], color=df_hg[,2], size=df_hg[,2]))+geom_point()
+      p + ggtitle("Scatterplot for two variables") +
+        xlab(input$selectbox) + ylab(input$selectbox1)+ theme(
+          plot.title = element_text(color="red", size=14, face="bold.italic"),
+          axis.title.x = element_text(color="blue", size=14, face="bold"),
+          axis.title.y = element_text(color="#993333", size=14, face="bold")
+        )
+      })
+  
+   
+    })
+    
+  
+})
+
+  
+    
+    observe({
+    observeEvent(input$btn_viewData,{
+      showModal(modalDialog(
+        title = "view of the data",
+        
+        output$btn_viewData<-renderPrint({
+          summary(datasetInput())
+        })
+      ))
+    })})
+  output$selectbox<-renderUI({
+    selectInput(inputId = "selectbox",
+                label = "Select Variable(X)",
+                choices = names(datasetInput()))
+    
+  })
+
+  output$selectbox1<-renderUI({
+    selectInput(inputId = "selectbox1",
+                label = "Select  Variable(Y)",
+                choices = names(datasetInput()))
+    
+  })
+
+}
+shinyApp(ui = ui, server = server)
