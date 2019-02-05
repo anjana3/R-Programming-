@@ -133,14 +133,20 @@ server <- function(input, output) {
   output$missingval<-renderPlot({
    plot_missing(df())
           })
-  output$check<-renderTable({
+  
+  output$mis<-renderPrint({
+    sapply(df(), function(x) sum(is.na(x)))  
+    })
+  
+    output$check<-renderTable({
     clean<-switch(input$clean,
                   miss = showModal(modalDialog(title = "Giving the Results for the missing values in the data frame",sum(is.na.data.frame(df())),
                                                tags$hr(),
                                                fluidPage(
                                                  tabsetPanel(
                                                    tabPanel(h4("viewdata"),
-                                                          plotOutput("missingval")),
+                                                          plotOutput("missingval"),
+                                                          verbatimTextOutput("mis")),
                                                    tabPanel(h4("anjana"),
                                                             sidebarLayout(sidebarPanel(
                                                               "hi"
