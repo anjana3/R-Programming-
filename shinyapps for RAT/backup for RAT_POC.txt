@@ -1,0 +1,69 @@
+library(shiny)
+require(shinydashboard)
+
+
+ui<-fluidPage(
+shinyUI(dashboardPage(skin = "green",
+  dashboardHeader(title = span(tagList(icon("cog",lib = "glyphicon"),"RAT IN SHINY"))),
+  dashboardSidebar(
+    sidebarMenu(
+      menuItem("RAT",tabName = "rat"),
+      menuItem("TRIL",tabName = "trail"),
+      menuItem("PROJECT",tabName = "project"),
+      menuItem("RESOURCE",tabName = "resource"),
+      menuItem("REPORT",tabName = "report"),
+      menuItem("DaTABASE",tabName = "database"))),
+      dashboardBody(tabItems(
+        tabItem(
+          tabName = "rat"
+        ),
+        tabItem(tabName = "trail"),
+        tabItem(tabName = "project"),
+        tabItem(tabName = "resource"),
+        tabItem(tabName = "report"),
+        tabItem(tabName = "database",fluidRow(
+          box(title = "Data To Upload",width =3,height = 300, solidHeader = TRUE, status = "primary",
+          selectInput("select", label = h3("Select storage type"), 
+                      c("Local Files","MYSQL","Postgresql")),tableOutput("select")),
+          verbatimTextOutput("tables")
+          
+        ))
+        
+        
+              ))
+      
+    
+  
+))
+  )
+server<-function(input,output){
+  output$select<-renderTable({
+    select<-switch(input$select,
+                   MYSQL=showModal(modalDialog(fluidPage(title = "hi",
+                                               textInput("usertext",label = h4("User Name"),value = "enter text"),
+                                               textInput("password",label = h4("Password"),value = "eeter"),
+                                               textInput("dbname",label = h4("DBname"),value = "dbname"),
+                                               numericInput("host",label = h4("Host"),value = "host"),
+                                               actionButton("submit", h4("Submit"),style="color: #fff; background-color: green;border-color: #2e6da4",width = 100)
+                   ))))
+  })
+
+observe({
+  observeEvent(input$submit,{
+    x<-input$usertext
+    y<-input$password
+    z<-input$dbname
+    k<-input$host
+    mydb = dbConnect(MySQL(), user='x', password='y', dbname='z', host='k')
+    
+    output$tables<-dbListTables(mydb)
+
+    
+  })
+})  
+  
+  
+}
+
+
+shinyApp(ui, server)
