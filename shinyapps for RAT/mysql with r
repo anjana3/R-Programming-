@@ -1,0 +1,15 @@
+#how to create a integratio to the mysql and r programming
+library(RMySQL)
+library(DT)
+mydb = dbConnect(MySQL(), user='root', password='lemon', dbname='northwind', host='127.0.0.1')
+
+dbListTables(mydb)
+
+dbListFields(mydb, 'order_details')
+
+#running a query and retriving data and saving it in a object
+rs = dbSendQuery(mydb, "SELECT * FROM order_details")
+
+data_first = fetch(rs, n=-1)
+plot(data_first$unit_price,data_first$product_id)
+plot(data_first$quantity,data_first$unit_price)
