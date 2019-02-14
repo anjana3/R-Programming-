@@ -1,0 +1,15 @@
+library(RPostgreSQL)
+#provide details to fill to connect to the postgresql
+drv <- dbDriver('PostgreSQL')  
+db <- 'first'  
+host_db <- 'localhost'  
+db_port <- '5432'  
+db_user <- 'postgres'  
+db_password<-'lemon'
+
+#how to connect to the postgresql data base with r programming
+conn <- dbConnect(drv, dbname=db, host=host_db, port=db_port, user=db_user, password=db_password)
+#to show the tables in the database name under first 
+dbListTables(conn)
+#to show the data fields in the particular table under the database
+dbListFields(conn, 'person')
