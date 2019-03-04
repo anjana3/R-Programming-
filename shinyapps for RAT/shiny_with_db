@@ -1,0 +1,126 @@
+#it has the postgresql connection with shiny by askig the dbname and password in shiny application
+library(shiny)
+require(shinydashboard)
+require(shinythemes)
+require(shinydashboardPlus)
+require(DT)
+require(DBI)
+require(miniUI)
+require(RPostgreSQL)
+
+ui<-fluidPage(theme = shinytheme("journal"),
+  shinyUI(dashboardPage(
+                        dashboardHeader(title = span(tagList(icon("cog",lib = "glyphicon"),"RAT IN SHINY"))),
+                        dashboardSidebar(
+                          sidebarMenu(
+                            menuItem("RAT",tabName = "rat",icon = icon("dashboard"),
+                                     menuSubItem("Import1-Supply",tabName = "import1"),
+                                     menuSubItem("Import data from V6",tabName = "v6")),
+                            menuItem("TRIL",tabName = "trail",icon = icon("clipboard"),
+                                     menuSubItem("Resource Need",tabName = "need"),
+                                     menuSubItem("Resources Assigned",tabName = "assigned")),
+                            menuItem("PROJECT",tabName = "project",icon = icon("project-diagram"),
+                                     menuSubItem("Maintain Project",tabName = "maintain"),
+                                     menuSubItem("Resources Assigened",tabName = "resource_ass")),
+                            menuItem("RESOURCE",tabName = "resource",icon = icon("user"),
+                                     menuSubItem("Resource",tabName = "resour"),
+                                     menuSubItem("Assignments per Resource")),
+                            menuItem("REPORT",tabName = "report",icon = icon("chart-bar"),
+                                     menuSubItem("General",tabName="gener"),
+                                     menuSubItem("Trail",tabName = "trail"),
+                                     menuSubItem("Non-Trail",tabName = "non"),
+                                     menuSubItem("Resource",tabName = "re")),
+                            
+                            menuItem("DATABASE",tabName = "database",icon = icon("database")))),
+                        dashboardBody( tabItems(
+                          tabItem(
+                            tabName = "rat"
+                          ),
+                          tabItem(tabName = "trail"),
+                          tabItem(tabName = "project"),
+                          tabItem(tabName = "resource"),
+                          tabItem(tabName = "report"),
+                          tabItem(tabName = "database",fluidRow(
+                            gradientBox(title = "Data To Upload",gradientColor = "teal",icon = "fa fa-th",
+width = 3,boxToolSize = "sm",
+                                        footer = selectInput("select", label = h3("Select storage type"), 
+                                                             c("select","LocalFiles","Postgresql")),
+                                        uiOutput("file_sel")
+                                        
+                            ),
+                            
+                            gradientBox(title = "Tables in DB",footer = uiOutput("table_detail"),width = 3,icon =icon("table"),gradientColor = "teal"),
+                            DT::dataTableOutput("table"),
+                            DT::dataTableOutput("table_post")
+                            
+                          ))
+                        ))
+  ))
+)
+
+server<-function(input,output){
+  
+  output$file_sel<-renderUI({
+    switch(input$select,
+           "LocalFiles"=fileInput("file", "Choose File",
+                                  multiple = TRUE,
+                                  accept = c("text/csv/xlsx",
+                                             "text/comma-separated-values,text/plain",
+                                             ".csv",".xlsx")),
+           "Postgresql"= showModal(modalDialog(
+            textInput("db",label = h4("Db Name"),value = "first"),
+            textInput("host",label = h4("Host"),value = "localhost"),
+            numericInput("port",label = h4("PORT"),value = "5432"),
+            textInput("user",label = h4("User Name"),value = "postgres"),
+            textInput("password",label = h4("Password"),value = "lemon"),
+            actionButton("submit", h4("CONNECT"),style="color: #fff; background-color: green;border-color: #2e6da4",width = 100))))
+  })
+  
+  
+  
+  table_data <- reactive ({
+    req(input$file)
+    dfd<-readxl::read_xlsx(input$file$datapath)
+    
+  })
+  
+  output$table<-DT::renderDataTable(
+    
+              table_data(),
+              options = list(scrollX = TRUE)
+      )
+  
+    
+  observe({
+    observeEvent(input$submit,{
+      x<-input$db
+      y<-input$host
+      z<-input$port
+      k<-input$user
+      n<-input$password
+      
+      conn <- dbConnect(RPostgres::Postgres(), dbname=x, host=y, port=z, user=k, password=n)
+      dbWriteTable(conn, name='New_Dataset',value=table_data(),overwrite = TRUE )
+      
+      output$table_detail<-renderUI({
+        selectInput(inputId = "select_tab",
+                    label = "Select Table",
+                    choices = dbListTables(conn))
+        
+      })
+      
+      output$table_post<-DT::renderDataTable(
+
+        dbReadTable(conn,input$select_tab),options = list(scrollX = TRUE)
+      ) 
+      
+    })
+  })  
+  
+  
+}
+
+
+shinyApp(ui, server)
+
+
