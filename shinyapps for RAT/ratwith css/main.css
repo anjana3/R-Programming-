@@ -1,0 +1,99 @@
+/*header title font */
+.main-header .logo{
+  font-family:"georgia",Times,"Times new Roman",serif;
+  font-weight:bold;
+  font-size:24px;
+}
+
+/*background color of header(logo part)*/
+.skin-blue .main-header .logo{
+  background-color: #222b2e;
+}
+
+/*change the background color of header (logo part)when mouse hover */
+
+.skin-blue .main-header .logo:hover{
+  background-color:orange;
+  
+}
+
+/* main sidebar*/
+
+
+
+/*active sidebar menu item */
+
+.skin-blue .main-sidebar .sidebar .sidebar-menu .sidebar-menusub .active a{
+    background-color:orange;
+    color:black;
+}
+
+.skin-blue .main-sidebar {
+  height: 762px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16);
+  background-color: #ffffff;
+  
+}
+.content-wrapper, .right-side {
+    width: 1440px;
+  height: 900px;
+  background-color: #f3f9fb;
+}
+
+.skin-blue .treeview-menu>li.active>a, .skin-blue .treeview-menu>li>a:hover {
+    color: #0a8caa;
+}
+.skin-blue .treeview-menu>li>a {
+    color: #646464;
+}
+/*sidebar menu items  when mouse hover */
+.skin-blue .main-sidebar .sidebar .sidebar-menu  a:hover{
+  background-color:#0a8caa;
+  color:orange;
+}
+
+.h4, h4 {
+    width: 180px;
+    height: 20px;
+    font-family: Karbon;
+    font-size: 21px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #646464;
+}
+.box {
+  height: 50px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16);
+  background-color: #ffffff;
+}
+
+
+
+.Trials {
+  width: 180px;
+  height: 20px;
+  font-family: Karbon;  
+  font-size: 21px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #0a8caa;
+}
+
+.box-header .box-title, .box-header>.fa, .box-header>.glyphicon, .box-header>.ion {
+  width: 250px;
+  height: 30px;
+  font-family: FreightTextProBlack;
+  font-size: 21px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #646464;
+}
