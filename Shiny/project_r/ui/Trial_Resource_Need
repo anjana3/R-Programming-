@@ -1,0 +1,34 @@
+source("Module/Trial_Info.r")
+tabItem(tabName = "Resource_Need",
+        shinyjs::useShinyjs(),        
+        fluidRow(
+            box(
+            width = 12, 
+            # title ="Trial Info",
+            # Trial_Info_UI("resource_need")
+            tags$div( class = 'Resource-Assigned-filter',
+                fluidRow(
+                        column(6,
+                            p(id="Resource-Assigned-filter-title", "Trial Resource Need")
+                        ),
+                        column(3,
+                            selectInput("Resource_Name_Need",
+                                    # "Choose File Type:",
+                                    label = NULL,
+                                choices = c(
+                                        "All" = "All",
+                                        "0078525" = "0078458",
+                                        "0074588"   = "0028856"
+                                    ),
+                                    width="75%")
+                        ),
+                        column(3,
+                            materialSwitch(inputId = "Resource_Need_Graph", label = "Display Graph", status = "success")
+                        )
+                    )
+                ),
+                uiOutput("Resource_Need_Select_Info")
+            )
+        )  
+)
+
