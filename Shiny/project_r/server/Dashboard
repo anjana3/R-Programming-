@@ -1,0 +1,11 @@
+
+
+output$Trial_Snapshot <-  renderAmCharts({
+        amBarplot(x = "Trial", y = c("Need", "Allocated"), data = Data, 
+        groups_color = c("#0a8caa", "#12c2e9"))
+    })
+
+output$Project_Snapshot <-  renderAmCharts({
+    amBarplot(x = "Trial", y = c("Need", "Allocated"), data = Data, 
+    groups_color = c("#0a8caa", "#12c2e9"))
+})
