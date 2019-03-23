@@ -1,0 +1,80 @@
+output$Resource_Info <- DT::renderDataTable(DT::datatable({
+        mtcars
+    }
+,rownames = FALSE, options = list(scrollY = 350,
+                  columnDefs = list(list(className = 'dt-center', targets = 0:4, width = '1px!important')))
+                  ) 
+)
+
+output$Resource_Need_Select_Info <- renderUI({
+    if(input$Resource_Need_Graph == FALSE){
+        if(input$Resource_Name_Need == "All"){
+            tags$div(id="Resource_Info_all_table",
+                    DT::dataTableOutput("Resource_Info") 
+            )
+        }
+        else{
+            list(
+                fluidRow(
+                    column(4, 
+                        tags$div(id="Info-col1",
+                            p(
+                                "PFI:",
+                                textOutput("PFI")
+                            ),
+                            p(
+                                "DD Executed By:",
+                                textOutput("DD")
+                            ),
+                            p(
+                                "IDBL:",
+                                textOutput("IDBL")
+                            )
+                        )
+                    ),
+                    column(4, 
+                        tags$div(id="Info-col2",
+                            p(
+                            "DEL:",
+                            textOutput("DEL")
+                            ),
+                            p(
+                                "TA:",
+                                textOutput("TA")
+                            ),
+                            p(
+                                "DEL EXT:",
+                                textOutput("EXT")
+                            )
+                        )
+                    ),
+                    column(4, 
+                        tags$div(id="Info-col3",
+                            p(
+                            "Comment :",
+                            textOutput("Comment123")
+                            )
+                        )
+                    )
+                ),
+                fluidRow(
+                    tags$div(id="Resource_Need_Action_Buttons",
+                        actionButton("Edit_Comment", "Edit Comment"),
+                        actionButton("MTI", "More Trial Info")
+                    ),
+                    tags$div(id="Resource_Info_table",
+                        DT::dataTableOutput("Resource_Info") 
+                    )
+                )
+            )
+        }
+    }
+    else{
+        amChartsOutput("Resources_Snapshot")
+    }
+})
+
+output$Resources_Snapshot <-  renderAmCharts({
+        amBarplot(x = "Trial", y = c("Need", "Allocated"), data = Data, 
+        groups_color = c("#0a8caa", "#12c2e9"))
+    })
