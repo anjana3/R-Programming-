@@ -1,0 +1,54 @@
+Trial_Info_UI <- function(id) {
+
+    ns <- NS(id)
+
+    fluidRow(
+        column(4, 
+            tags$div(id="Info-col1",
+                p(
+                    "PFI:",
+                    textOutput(ns("PFI"))
+                ),
+                p(
+                    "DD Executed By:",
+                    textOutput(ns("DD"))
+                ),
+                p(
+                    "IDBL:",
+                    textOutput(ns("IDBL"))
+                )
+            )
+        ),
+        column(4, 
+            tags$div(id="Info-col2",
+                p(
+                "DEL:",
+                textOutput(ns("DEL"))
+                ),
+                p(
+                    "TA:",
+                    textOutput(ns("TA"))
+                ),
+                p(
+                    "DEL EXT:",
+                    textOutput(ns("EXT"))
+                )
+            )
+        ),
+        column(4, 
+            tags$div(id="Info-col3",
+                p(
+                "Comment :",
+                textOutput(ns("Comment123"))
+                ),
+                actionButton(ns("MTI"), "More Trial Info")
+            )
+        )
+
+    )
+
+ }
+
+Trial_Info_Server <- function( input, output, session){
+    
+}
