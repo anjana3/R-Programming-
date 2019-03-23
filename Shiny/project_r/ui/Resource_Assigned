@@ -1,0 +1,44 @@
+source("Module/Trial_Info.r")
+tabItem(tabName = "Resource_Assigned",
+        shinyjs::useShinyjs(),
+        fluidRow(
+            tags$div( class = 'Resource-Assigned-filter',
+                box( width = 12,
+                    fluidRow(
+                        column(3,
+                            p(id="Resource-Assigned-filter-title", "Trial Resource Assigned")
+                        ),
+                        column(3,
+                            selectInput("Resource_Role",
+                                    # "Choose File Type:",
+                                    label = NULL,
+                                choices = c(
+                                        "All Trials" = "All Trials",
+                                        "0078525" = "0078458",
+                                        "0074588"   = "0028856"
+                                    ),
+                                    width="75%")
+                        ),
+                        column(3,
+                            selectInput("Quarter",
+                                    # "Choose File Type:",
+                                    label = NULL,
+                                choices = c(
+                                        "Select Quarter" = "Select Quarter",
+                                        "Q1" = "Q1",
+                                        "Q2" = "Q2",
+                                        "Q3" = "Q3",
+                                        "Q4" = "Q4"
+                                     ),
+                                    width="75%")
+                        ),
+                        column(3,
+                            materialSwitch(inputId = "Trial_Assigned_Graph", label = "Display Graph", status = "success")
+                        )
+                    ),
+                    uiOutput("Resource_assigned")
+                )
+            )
+        )
+)
+
