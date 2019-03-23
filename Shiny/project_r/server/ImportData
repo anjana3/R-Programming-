@@ -1,0 +1,169 @@
+# pool <- dbPool(
+#   drv = dbDriver("PostgreSQL", max.con = 100),
+#   dbname = "postgres",
+#   host = "localhost",
+#   user = "postgres",
+#   password = "admin123!",
+#   idleTimeout = 3600000
+# )
+
+options(psql = list(
+  "host" = "localhost",
+#   "port" = 3306
+  "user" = "postgres",
+  "password" = "admin123!",
+  "dbname" = "postgres"
+))
+
+## Dynamically change the Preview area content based on file upload
+output$upload_preview <- renderUI({
+        if(length(input$Input_File) > 0){
+            box( title = "Uploaded File data", status = "primary", height = 
+                "140%",width = "12",solidHeader = T, 
+                     column(width = 12, align = 'center',
+                            # HTML(paste0(
+                            #     '<div id="table" style="width:100%; height:auto; " 
+                            #           class="shiny-table-output">
+                            #     </div>
+                            #     '
+                            # ))
+                             DT::dataTableOutput("table")
+                     )
+                )
+        }
+        else{
+
+            box( title = NULL, status = "primary", height = 
+            "140%",width = "12",solidHeader = T, 
+                    column(width = 12, 
+                        HTML(
+                            paste0('
+                                <div id="Preview">
+                                    <div id="icon" class="shiny-html-output"></div>
+                                    <div id="mytext" class="shiny-html-output"></div>
+                                </div>
+                                ')
+                        )
+                    )
+            )
+              
+                     
+        }
+})
+
+output$icon <- renderUI({
+    img(src = "Images/eye.png")
+   
+})
+
+output$mytext <- renderUI({
+    HTML("<br> Upload a File to <br> to Preview </br>")
+})
+
+observe ({
+    if (input$File_type == 'Select File Type'){
+        # disable("submit")
+        disable("Input_File")
+        disable("Input_Text")
+    }
+    else{
+        # enable("submit")
+        enable("Input_File")
+        enable("Input_Text")
+    }
+    if(length(input$Input_File) == 0){
+        disable("submit")
+    }
+    else{
+        enable("submit")
+    }
+})
+
+
+##Preview the uploaded file
+output$table <- DT::renderDataTable(DT::datatable({
+# output$table <- renderTable({
+        # input$Input_File will be NULL initially. After the user selects
+        # and uploads a file, head of that data file by default,
+        # or all rows if selected, will be shown.
+
+        req(input$Input_File)
+
+        # when reading semicolon separated files,
+        # having a comma separator causes `read.csv` to error
+        tryCatch(
+            {
+                df <- read.xlsx(input$Input_File$datapath, sheetIndex = 1)
+                # query <- sqlInterpolate(ANSI(),"SELECT * from rat_resource;")
+                # outp <- dbGetQuery(pool, query)
+
+            },
+            error = function(e) {
+                # return a safeError if a parsing error occurs
+                stop(safeError(e))
+            }
+        )}
+            ,rownames = FALSE, options = list(scrollY = 350,
+            columnDefs = list(list(className = 'dt-center', targets = 0:4, width = '1px!important')))
+            ) 
+        )
+
+resource_data <- reactive({
+    df <- read.xlsx(input$Input_File$datapath, sheetIndex = 1)
+    df
+})
+
+save_to_db <- function(dataframe_to_db){
+    conn <- dbConnect(
+        "PostgreSQL",
+        user = options()$psql$user,
+        password = options()$psql$password,
+        dbname = options()$psql$dbname         
+    )
+
+    dbWriteTable(conn, "rat_resource", dataframe_to_db, overwrite = TRUE, row.names = FALSE)
+}
+
+get_1supply_dataframe <- function(){
+   supply_data <- resource_data() 
+   key_columns <- c('WWID', 'Name', 'Supply.Location', 'Contract.Type', 'JJEDS.Manager', 'JJEDS.Status')
+   supply_key_columns_data <- supply_data[key_columns]
+#    print("pp",head(supply_key_columns_data))
+   supply_key_columns_data$res_comment  <- ''
+#    print(head(supply_key_columns_data))
+   Column_Names <- c('wwid', 'user_name', 'res_location', 'contract_type', 'jjeds_manager', 'jjeds_status', 'res_comment')
+   names(supply_key_columns_data) <- Column_Names
+
+    return(supply_key_columns_data)
+
+}
+
+get_v6_dataframe <- function(){
+   supply_data <- resource_data() 
+   key_columns <- c('WWID', 'Name', 'Supply.Location', 'Contract.Type', 'JJEDS.Manager', 'JJEDS.Status')
+   supply_key_columns_data <- supply_data[key_columns]
+#    print("pp",head(supply_key_columns_data))
+   supply_key_columns_data$res_comment  <- ''
+#    print(head(supply_key_columns_data))
+   Column_Names <- c('wwid', 'user_name', 'res_location', 'contract_type', 'jjeds_manager', 'jjeds_status', 'res_comment')
+   names(supply_key_columns_data) <- Column_Names
+
+    return(supply_key_columns_data)
+
+}
+
+### Save the file to the database based on the file type(V6/ 1- supply)
+observeEvent(input$Save_to_db, {   
+        if(input$File_type == "V6-Demand"){
+            dataframe_to_db = get_v6_dataframe()
+            conn = save_to_db(dataframe_to_db)  
+        }
+        else if(input$File_type == "1-Supply"){
+            dataframe_to_db = get_1supply_dataframe()
+            conn = save_to_db(dataframe_to_db)  
+        }
+        else{
+              print("please chooose a proper file type")
+        }
+        
+})
