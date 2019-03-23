@@ -1,0 +1,255 @@
+Trial_Info_Block <- fluidRow(
+        column(6, 
+            tags$div(id="Trial-Info-col1",
+                p(
+                    "Sync ID:",
+                    textOutput("Sync_ID")
+                ),
+                p(
+                    "Study Title:",
+                    textOutput("Study_Title")
+                ),
+                p(
+                    "Study Number:",
+                    textOutput("Study_Number")
+                ),
+                p(
+                "Trial Phase:",
+                textOutput("Trial_Phase")
+                ),
+                p(
+                    "Approval Status:",
+                    textOutput("Approval_Status")
+                ),
+                p(
+                    "DDL:",
+                    textOutput("DDL")
+                ),
+                p(
+                "IDL TA Head:",
+                textOutput("IDL_TA_Head")
+                ),
+                p(
+                    "IDS Outsourced ?:",
+                    textOutput("IDS_Outsource")
+                ),
+                p(
+                    "IDS Vendor:",
+                    textOutput("IDS_vendor")
+                ),
+                p(
+                "IDS Hemes ?:",
+                textOutput("Trial_Phase")
+                ),
+                p(
+                    "EDC ?:",
+                    textOutput("Approval_Status")
+                ),
+                p(
+                    "EDC Vendor:",
+                    textOutput("EDC_Vendor")
+                ),
+                p(
+                "FPI:",
+                textOutput("FPI")
+                ),
+                p(
+                    "DBL:",
+                    textOutput("DBL")
+                ),
+                p(
+                    "DBL EXT:",
+                    textOutput("DBL_EXT")
+                ),
+                p(
+                "IDBL:",
+                textOutput("IDBL")
+                ),
+                p(
+                    "Comment:",
+                    textOutput("Trial_Comment")
+                )
+            )
+        ),
+        column(6, 
+            tags$div(id="Trial-Info-col2",
+                p(
+                    "Strategic Priority:",
+                    textOutput("Strategic_Priority")
+                ),
+                p(
+                    "Project ID:",
+                    textOutput("Study_Title")
+                ),
+                p(
+                    "Project Description:",
+                    textOutput("Project_Description")
+                ),
+                p(
+                "Development Category:",
+                textOutput("Development_Category")
+                ),
+                p(
+                    "DD Executed By:",
+                    textOutput("DD_Executed_By")
+                ),
+                p(
+                    "Therapeutic Area",
+                    textOutput("Therapeutic_Area")
+                ),
+                p(
+                "Responsible Unit:",
+                textOutput("Responsible_unit")
+                ),
+                p(
+                    "Product Name ?:",
+                    textOutput("Product_Name")
+                ),
+                p(
+                    "DAC:",
+                    textOutput("DAC")
+                ),
+                p(
+                "DASC:",
+                textOutput("DASC")
+                ),
+                p(
+                    "Subject Type:",
+                    textOutput("Subject_Type")
+                ),
+                p(
+                    "IDS Trial Type:",
+                    textOutput("IDS_Trial_Type")
+                ),
+                p(
+                "GCO Trial Type:",
+                textOutput("GCO_Trial_Type")
+                ),
+                p(
+                    "IDS MAF Model:",
+                    textOutput("IDS_MAF_Model")
+                ),
+                p(
+                    "New Compound Flag:",
+                    textOutput("New_Compound_Flag")
+                ),
+                p(
+                "Type Data Captured:",
+                textOutput("Data_Captured")
+                ),
+                p(
+                    "GCO_CPL:",
+                    textOutput("GCO_CPL")
+                ),
+                p(
+                    "Value Type:",
+                    textOutput("Value_Type")
+                )
+            )
+        )
+    )
+observeEvent(input$MTI, {
+      showModal(modalDialog(
+        title = "More Trial Info",
+        Trial_Info_Block,
+        easyClose = TRUE
+      ))
+    })
+ 
+output$Resource_assigned <- renderUI({
+    if(input$Trial_Assigned_Graph == FALSE){
+        if(input$Resource_Role == "All Trials"){
+            tags$div(id="Trial_resource_assigned_tab",
+                    DT::dataTableOutput("Trial_resource_assigned") 
+            )
+        }
+        else{
+            list(
+                fluidRow(
+                    column(4, 
+                        tags$div(id="Info-col1",
+                            p(
+                                "PFI:",
+                                textOutput("PFI")
+                            ),
+                            p(
+                                "DD Executed By:",
+                                textOutput("DD")
+                            ),
+                            p(
+                                "IDBL:",
+                                textOutput("IDBL")
+                            )
+                        )
+                    ),
+                    column(4, 
+                        tags$div(id="Info-col2",
+                            p(
+                            "DEL:",
+                            textOutput("DEL")
+                            ),
+                            p(
+                                "TA:",
+                                textOutput("TA")
+                            ),
+                            p(
+                                "DEL EXT:",
+                                textOutput("EXT")
+                            )
+                        )
+                    ),
+                    column(4, 
+                        tags$div(id="Info-col3",
+                            p(
+                            "Comment :",
+                            textOutput("Comment1234")
+                            )
+                        )
+                    )
+                ),
+                fluidRow(
+                    tags$div(id="Resource_Need_Action_Buttons",
+                        actionButton("Trial_Info", "More Trial Info"),
+                        actionButton("Assign_Resource", "Assign Resource")
+                    )),
+                    fluidRow(
+                        box( 
+                            width=12,
+                            fluidRow(
+                                column(width = 8, p(id="Resource-Assigned-data-title", "Resource Need for Trial:")),
+                                div(class = 'select-inputs',
+                                    column(width = 4, selectInput(
+                                    "Project_ID",
+                                    label = NULL,
+                                    # "Choose Project",
+                                        choices = c(
+                                            "Choose Role" =  "Choose Role",
+                                            "Data Delivery Lead" = "Data Delivery Lead",
+                                            "Manager" = "Manager"
+                                        )
+                                     )
+                                  )
+                                )
+                            ),
+                            DT::dataTableOutput("Trial_resource_assigned")
+                        )
+                    )
+                )
+        }
+    }
+    else{
+        amChartsOutput("Resources_Snapshot")
+    }
+})
+
+output$Trial_resource_assigned <- DT::renderDataTable(DT::datatable({
+        mtcars
+    }
+,rownames = FALSE, options = list(scrollY = 200,
+                    searching = FALSE,
+                    dom = 't',
+                    fixedColumns = TRUE,
+                    scrollX = TRUE,
+                  columnDefs = list(list(className = 'dt-center', targets = 0:4, width = '1px!important')))
+                  ) 
+)
