@@ -1,0 +1,516 @@
+#submit{
+    background: #0a8caa;
+    margin-left: 25px;
+}
+
+#upload_preview .box{
+  background: #f3f9fb;
+}
+
+.btn-default {
+  background: #0a8caa!important;
+}
+
+.Resource-Assigned-filter > .box > .box-body{
+  height: 62px!important;
+}
+
+#Resource_Info_table{
+  width: 90%!important;
+  margin-left: 40px;
+  height: auto;
+  margin-top: 20px;
+}
+
+#Resource_Need_Action_Buttons{
+  text-align: right;
+  margin-right: 66px;
+  margin-top : 12px;
+}
+
+#Info-col1 > p, #Info-col2 > p, #Info-col3 > p {
+  text-align : left;
+}
+
+#Info-col1{
+  margin-left: 30px;
+}
+
+
+#Resource_Details{
+ 
+    width: 94%!important;
+    height: auto;
+    margin-top: 32px!important;
+    margin-left: 27px!important;
+
+}
+
+#Resource_Assignment_Info {
+  margin-left: 20px;
+  margin-top: 20px;
+
+}
+
+#Resource_Assign_Info{
+  width: 95%!important;
+  height: auto;
+  margin-left: 10px;
+  margin-top: 25px;
+}
+
+#Resource_Data .box{
+  width: 120%!important;
+}
+
+/* Hide AmCharts Logo in the graphs */
+.amcharts-main-div a{
+  display: none!important;
+}
+
+/* Data Table Sorting */
+table.dataTable thead .sorting {
+  background-image: None!important;
+}
+
+table.dataTable thead .sorting_asc {
+  background-image: None!important;
+}
+
+table.dataTable thead .sorting_desc {
+  background-image: None!important;
+}
+/* Import Data Page CSS */
+
+/* TO align file upload widget Browse button */
+.form-control{
+  margin-top : 5px;
+}
+
+.progress-bar{
+  background-color : linear-gradient(135deg, rgb(80, 113, 221) 30%, rgb(143, 49, 169) 100%)!important;
+}
+
+#Input_File_progress{
+  padding-left: 2%;
+  background-color: white;
+}
+
+#shiny-tab-File_Upload .col-sm-12 .box .row .col-sm-4:nth-child(-n+1) .shiny-input-container{
+  margin-left :60px;
+}
+/* #mytext{
+  margin-left: 37%;
+  font-weight: bold;
+  padding-bottom: 16%;
+}
+
+#icon{
+  margin-left: 39%;
+  margin-top: 8%;  
+} */
+
+#Preview{
+  text-align: center;
+}
+.import-data{
+  width :50%;
+  margin-left: 25%;
+  margin-top: 10%;
+}
+
+
+/* ::-webkit-scrollbar-track {
+ -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3) !important; 
+ -webkit-border-radius: 10px !important;
+ border-radius: 10px !important;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+ -webkit-border-radius: 5px !important;
+ border-radius: 5px !important;
+ background:#ffffff !important; 
+ -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5) !important; 
+}
+::-webkit-scrollbar-thumb:window-inactive {
+ background: #ffffff !important; 
+} */
+
+::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 7px;
+	background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar
+{
+	width: 7px;
+	background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb
+{
+	border-radius: 7px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #555;
+}
+
+/* Import Page Data CSS */
+
+.box-title{
+  margin-left: 36%!important;
+}
+
+
+.box .selectize-control {
+  margin-top : 5px;
+}
+
+.box-header .box-title{
+font-weight: bold;
+}
+
+button{
+   text-transform: initial!important;
+}
+
+/* .tab-content > div[data-value='File_Upload'] .box-header{
+  border-top: 1px solid #e5e5e5;
+} */
+
+.box-body{
+  border-top: 1px solid #e5e5e5;
+}
+
+.box.box-solid.box-primary>.box-header {
+  color: #fff;
+  background: #fff;
+  background-color: #fff;
+}
+
+.box.box-solid.box-primary>.box-header {
+  color: #646464;
+  background: #fff;
+  background-color: #fff;
+}
+
+#uploaded-file-box .box{
+  height: 140%;
+  margin-left: 15px;
+  width: 97%;
+}
+/* Landing Page */
+
+.trial-snapshot-box{
+  border-radius: 0px!important;
+  border-top: opx !important;
+}
+
+
+.btn-dropdown-input .btn-danger{
+  background-image: linear-gradient(149deg, rgb(1, 226, 216), rgb(115, 139, 243))!important;
+}
+
+.box{
+  border-top : None!important;
+  box-shadow: 0 8px 10px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12), 0 5px 5px -3px rgba(0,0,0,0.3);
+}
+
+#shiny-tab-File_Upload .col-sm-4{
+  margin-top : 25px!important;
+}
+
+#Resources_Snapshot{
+  margin-left: 51px;
+  margin-top: 16px;
+  width : 90%!important;
+}
+
+.tab-content > div[data-value='Dashboard Data'] {
+  margin-left: 25px;
+  margin-top: 8px;
+}
+
+.tab-content > div[data-value='Dashboard Data'] .row:nth-child(3){
+  margin-left: -3px;
+  margin-bottom: 15px;
+}
+
+.tab-content > div[data-value='Dashboard Data'] .row:nth-child(1) .col-sm-4{
+  margin-top : 28px;
+}
+
+/* #shiny-tab-Dashboard .row{
+  margin-top : -26px;
+  padding-top: 0px;
+} */
+
+#Edit_Button{
+  margin-top :25px;
+}
+
+
+.trial-snapshot-box  h3{
+  margin-top : 8px!important;
+  font-weight: bold!important;
+  color : #646464!important;
+}
+
+.trial-snapshot-box .row{
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.trial-snapshot-box .row .col-sm-4:nth-child(-n+2){
+  border-right: 1px solid #e5e5e5;
+}
+
+.trial-snapshot-box .row .selectize-input{
+  border:None!important;
+}
+
+.Resource-Assigned-filter .row .selectize-input{
+  border: None!important
+}
+
+.project-snapshot-box  h3{
+  margin-top : 8px!important;
+  font-weight: bold!important;
+  color : #646464!important;
+}
+
+.project-snapshot-box .row{
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.project-snapshot-box .row .col-sm-4:nth-child(-n+2){
+  border-right: 1px solid #e5e5e5;
+}
+
+.project-snapshot-box .row .selectize-input{
+  border:None!important;
+}
+
+
+.project-snapshot-box .row .selectize-dropdown,  .selectize-input {
+  border: 1px solid #0a8caa;
+}
+
+.project-snapshot-box .row .selectize-dropdown, .selectize-input, .selectize-input input {
+  color: #646464!important;
+  font-weight: 500!important;
+}
+
+.logo {
+  border: 1px solid #e5e5e5;
+}
+
+/**/
+.Resource-Assigned-filter{
+  border-bottom: 1px solid #e5e5e5;
+    height: 42px;
+}
+
+.Resource-Assigned-filter > .material-switch {
+  margin-top: 2px!important;
+}
+
+#Resource-Assigned-filter-title{
+  text-align: left;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+#Resource-Assigned-data-title{
+  text-align: left;
+  font-size: 18px;
+  font-weight: bold;
+}
+/**/
+/* Landing Page Completed **/
+
+/* UX Related Changes **/
+.skin-blue .sidebar-menu>li>.treeview-menu {
+  margin: 0 1px;
+  background: #ffffff;
+}
+.skin-blue .sidebar-menu>li>.treeview-menu .active>a{
+  color: #0a8caa!important;
+}
+
+.skin-blue .main-header .navbar {
+  background-color: #ffffff!important;
+}
+
+.skin-blue .main-header .logo {
+  background-color: #ffffff!important;
+  color: #262626!important;
+}
+
+.skin-blue .left-side, .skin-blue .main-sidebar, .skin-blue .wrapper{
+  background-color: #ffffff!important;
+
+}
+
+.skin-blue .main-header .navbar .sidebar-toggle {
+  color: #d8d8d8!important;
+}
+
+.skin-blue .main-header .navbar .sidebar-toggle:hover {
+  background-color: #0a8caa!important;
+}
+
+.skin-blue .sidebar-menu>li.active>a, .skin-blue .sidebar-menu>li:hover>a {
+  color: #fff!important;
+  background: #ffffff!important;
+}
+
+.skin-blue .sidebar a {
+  color: #646464!important;
+}
+
+.skin-blue .sidebar-menu>li.active>a, .skin-blue .sidebar-menu>li:hover>a {
+  color: #0a8caa!important;
+  background: #ffffff!important;
+}
+
+.box .box-header{
+  padding-right: 98%!important;
+  white-space: nowrap;
+}
+
+
+/**/
+
+/**Button CSS **/
+
+@import url(https://fonts.googleapis.com/css?family=Roboto:500);
+h1,p{
+    font-family: 'Roboto', sans-serif;
+    text-align:center;
+}
+button{
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase;
+}
+
+button:focus {
+  outline: none !important;
+}
+.btn {
+  border-radius: 2px;
+  border: 0;
+  transition: .2s ease-out;
+  color: #fff;
+  margin: 6px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+.btn:hover {
+  color: #fff;
+  box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+}
+
+.btn:active, .btn:focus, .btn.active {
+  outline: 0;
+  color: #fff;
+}
+
+/*Primary*/
+.btn-primary {
+  background: #4285F4;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+  background-color: #5a95f5 !important;
+}
+
+.btn-primary.active {
+  background-color: #0b51c5 !important;
+}
+/*Secondary*/
+.btn-secondary {
+  background-color: #aa66cc;
+}
+.btn-secondary:hover, .btn-secondary:focus {
+  background-color: #b579d2 !important;
+  color: #fff;
+}
+.btn-secondary.active {
+  background-color: #773399 !important;
+}
+.btn-secondary.active:hover {
+  color: #fff;
+}
+.btn-secondary.active:focus {
+  color: #fff;
+}
+
+/*Default*/
+/* .btn-default {
+  background: #2BBBAD;
+} */
+.btn-default:hover, .btn-default:focus {
+  background-color: #30cfc0 !important;
+}
+.btn-default.active {
+  background-color: #186860 !important;
+}
+
+/*Success*/
+.btn-success {
+  background: #00C851;
+}
+.btn-success:hover, .btn-success:focus {
+  background-color: #00d255 !important;
+}
+.btn-success.active {
+  background-color: #006228 !important;
+}
+
+/*Info*/
+.btn-info {
+  background: #33b5e5;
+}
+.btn-info:hover, .btn-info:focus {
+  background-color: #4abde8 !important;
+}
+.btn-info.active {
+  background-color: #14799e !important;
+}
+
+/*Warning*/
+.btn-warning {
+  background: #FF8800;
+}
+.btn-warning:hover, .btn-warning:focus {
+  background-color: #ff961f !important;
+}
+.btn-warning.active {
+  background-color: #cc8800 !important;
+}
+
+/*Danger*/
+.btn-danger {
+  background: #CC0000;
+  /* background-image: linear-gradient(149deg, rgb(1, 226, 216), rgb(115, 139, 243))!important; */
+}
+.btn-danger:hover, .btn-danger:focus {
+  background-color: #db0000 !important;
+  /* background-image: linear-gradient(149deg, rgb(1, 226, 216), rgb(115, 139, 243))!important; */
+}
+.btn-danger.active {
+  /* background-color: maroon !important; */
+  /* background-image: linear-gradient(149deg, rgb(1, 226, 216), rgb(115, 139, 243))!important; */
+}
+
+/*Link*/
+.btn-link {
+  background-color: transparent;
+  color: #000;
+}
+.btn-link:hover, .btn-link:focus {
+  background-color: transparent;
+  color: #000;
+}
