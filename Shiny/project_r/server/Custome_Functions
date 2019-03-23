@@ -1,0 +1,20 @@
+library(shiny)
+library(shinydashboard)
+library(shinyWidgets)
+library(shinyjs)
+
+makeDropDown <- function(i) {
+  dropdownButton(
+    tags$div(
+      style = "color: black !important;", # for text
+      h3("Heading"),
+      selectInput(paste0("sel", i), "Select:", LETTERS),
+      downloadButton(
+        outputId = paste0("down", i), label = "Load", 
+        style = "background-color: #f4f4f4 !important; color: #444 !important; border: 1px solid #ddd !important;" # for button
+      )
+    ),
+    circle = FALSE,
+    icon = icon("cog")
+  )
+}
