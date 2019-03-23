@@ -1,0 +1,103 @@
+tabItem(
+tabName = 'Dashboard',
+    # tags$h1("Landing Dashboard"),
+    fluidRow(
+        tags$div( class = 'trial-snapshot-box',
+        box(
+        width = 12,
+        # title = "Projects Snapshot",
+        fluidRow(
+            column(width = 4, tags$h3("Trial Graph")),
+            # div(class = 'select-inputs',
+            column(width = 4, selectInput(
+            "Project_ID",
+            label = NULL,
+            # "Choose Project",
+            choices = c(
+                "Choose Trial"    =  "Choose Trial",
+                "0012522" = "0012528",
+                "8525263" = "8425584",
+                "0078589" = "0078589", 
+                "0077896" = "0077896", 
+                "0075369" = "0075369", 
+                "00712596" = "00712596", 
+                "00786532" = "00786532" 
+            )
+          
+            )),
+            column(width =4, selectInput(
+                "Proj_Qtr_ID",
+                label = NULL,
+                # "Choose Quarter",
+            choices = c(
+                "Choose Quarter"    =  "Choose Quarter",
+                "Q1" = "Q1",
+                "Q2" = "Q2",
+                "Q3" = "Q3",
+                "Q4" = "Q4"
+            )
+            ) )
+            # )
+        ),  
+        amChartsOutput("Trial_Snapshot")
+        )   
+        )
+        # ,
+        # tags$div( class = 'project-snapshot-box',
+        # box(
+        # width = 6,title =NULL,
+        # # title = "Projects Snapshot",
+        # fluidRow(
+        #     column(width = 4, tags$h3("Project Graph")),
+        #     div(class = 'select-inputs',
+        #     column(width = 4, selectInput(
+        #     "Project_ID",
+        #     label = NULL,
+        #     # "Choose Project",
+        #     choices = c(
+        #         "Choose Project"    =  "Choose Project",
+        #         "0012522" = "0012528",
+        #         "8525263" = "8425584s"
+        #     )
+        #     )),
+        #     column(width =4, selectInput(
+        #         "Proj_Qtr_ID",
+        #         label = NULL,
+        #         # "Choose Quarter",
+        #     choices = c(
+        #         "Choose Date"    =  "Choose Date",
+        #         "Q1" = "Q1",
+        #         "Q2" = "Q2",
+        #         "Q3" = "Q3",
+        #         "Q4" = "Q4"
+        #     )
+        #     ) ))
+        # ),
+        #     dropdownButton(
+        #     # tags$h3("Choose Filters"),
+        #     selectInput(
+        #     "Project_ID",
+        #     "Choose Project",
+        #     choices = c(
+        #         "0012522" = "0012528",
+        #         "8525263" = "8425584s"
+        #     )
+        #     ),
+        #     selectInput(
+        #         "Proj_Qtr_ID",
+        #         "Choose Quarter",
+        #     choices = c(
+        #         "Q1()" = "Q1",
+        #         "Q2()" = "Q2",
+        #         "Q3()" = "Q3",
+        #         "Q4()" = "Q4"
+        #     )
+        #     ),
+        #     circle = TRUE, status = "danger", icon = icon("gear"), width = "300px",
+        #     tooltip = tooltipOptions(title = "Click to see inputs !")
+        # ),
+        # amChartsOutput("Project_Snapshot")
+        # )
+        # )
+    )
+)
