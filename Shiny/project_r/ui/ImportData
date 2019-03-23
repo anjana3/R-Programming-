@@ -1,0 +1,67 @@
+tabItem(tabName = "File_Upload",
+        shinyjs::useShinyjs(),        
+        box(
+            width = 12,
+            title = "Import Data",
+            fluidRow(
+                column(4,
+                    selectInput("File_type",
+                                # "Choose File Type:",
+                                label = NULL,
+                            choices = c(
+                                    "Select File Type" = "Select File Type",
+                                    "V6 Demand" = "V6-Demand",
+                                    "1 Supply"   = "1-Supply"
+                                ),
+                                width="75%")
+                ),
+                column(4,  
+                HTML(
+                    paste0(
+                        '<div class="form-group shiny-input-container">
+                            <div class="input-group">
+                                <label class="input-group-btn">
+                                <span id="Input_Text" class="btn btn-default btn-file">
+                                    Browse...
+                                    <input id="Input_File" name="Input_File" type="file" style="display: none;" accept="text/csv,text/comma-separated-values,text/plain,.csv, .xlsx"/>
+                                </span>
+                                </label>
+                                <input type="text" class="form-control" placeholder="No file selected" readonly="readonly"/>
+                            </div>
+                            <div id="Input_File_progress" class="progress progress-striped active shiny-file-input-progress">
+                                <div class="progress-bar"></div>
+                            </div>
+                        </div>'
+                    )                    
+                )                      
+                    # fileInput("Input_File", 
+                    # # "Choose CSV File",
+                    # label = NULL,
+                    #         multiple = FALSE,
+                    #         accept = c("text/csv",
+                    #                 "text/comma-separated-values,text/plain",
+                    #                 ".csv, .xlsx"))
+                ),
+                column(4,
+                    actionButton(
+                        inputId = "Save_to_db",
+                        label = "Save to Database",
+                        icon = NULL
+                    )
+                )
+            )
+        ),
+        fluidRow(
+            div(id='uploaded-file-box', 
+                
+                #  box( title = "Uploaded File data", status = "primary", height = 
+                #  "140%",width = "12",solidHeader = T, 
+                #      column(width = 12, align = 'center',
+                            uiOutput('upload_preview')
+                            #  DT::dataTableOutput("table")
+                    #  )
+                #  )
+            )
+        )
+        # DT::dataTableOutput('table'),style = "height:500px; overflow-y: scroll!important;overflow-x: scroll!important;"
+)
